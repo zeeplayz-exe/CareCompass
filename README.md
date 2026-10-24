@@ -5,8 +5,6 @@ Built for the **CodeTheCure** hackathon on Devpost.
 
 > CareCompass gives general health information only. It does not diagnose, and it is not a substitute for a doctor. In an emergency, call your local emergency number (103 / 112 in Uzbekistan, 112 in the EU, 911 in the US).
 
-**Live demo:** https://claude.ai/artifact/HWbnmbwAU9JGM6oU61JX4e
-
 ---
 
 ## The problem
