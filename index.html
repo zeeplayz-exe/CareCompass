@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CareCompass – Symptom guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f8f6;--sf:#fff;--tx:#12302b;--mu:#5b7570;--ac:#0f8f7e;--ac2:#14b8a6;--bd:#d6e6e1;--ok:#e3f6ee;--wa:#fff3d9;--er:#fde4e1;--okt:#0b6b4f;--wat:#8a5a00;--ert:#a3281d;--sh:0 10px 30px rgba(15,143,126,.12);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1917;--sf:#142724;--tx:#e6f4f1;--mu:#8fb0a9;--ac:#2dd4bf;--ac2:#14b8a6;--bd:#233f3a;--ok:#12332a;--wa:#3a2f12;--er:#3d1b19;--okt:#6ee7b7;--wat:#fcd34d;--ert:#fca5a5;--sh:0 10px 30px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg:#0c1917;--sf:#142724;--tx:#e6f4f1;--mu:#8fb0a9;--ac:#2dd4bf;--ac2:#14b8a6;--bd:#233f3a;--ok:#12332a;--wa:#3a2f12;--er:#3d1b19;--okt:#6ee7b7;--wat:#fcd34d;--ert:#fca5a5;--sh:0 10px 30px rgba(0,0,0,.4)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 "Nunito","Segoe UI",system-ui,sans-serif;transition:background .4s,color .4s;min-height:100vh}
+.wrap{max-width:760px;margin:0 auto;padding:18px 16px 60px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.logo{font-weight:800;font-size:20px;display:flex;gap:8px;align-items:center}
+.logo i{font-style:normal;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-radius:12px;padding:4px 8px}
+button{font:inherit;color:inherit;cursor:pointer}
+.th{background:var(--sf);border:1px solid var(--bd);border-radius:999px;padding:8px 14px;transition:.3s}
+.th:hover{transform:scale(1.05)}
+.bar{height:6px;background:var(--bd);border-radius:9px;overflow:hidden;margin-bottom:18px}
+.bar b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .5s}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:24px;padding:26px;box-shadow:var(--sh);animation:in .45s ease}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.15;margin:.2em 0 .3em;letter-spacing:-.02em}
+h2{font-size:24px;margin:0 0 6px}h3{margin:18px 0 8px;font-size:17px}
+p{margin:.4em 0}.mu{color:var(--mu)}
+.hero{font-size:56px;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.1)}}
+.how{display:grid;gap:10px;margin:18px 0}
+.how div{display:flex;gap:12px;align-items:flex-start;background:var(--bg);padding:12px 14px;border-radius:16px}
+.how span{font-size:24px}
+.btn{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:0;border-radius:16px;padding:13px 26px;font-weight:700;transition:.25s;box-shadow:0 6px 18px rgba(20,184,166,.35)}
+.btn:hover{transform:translateY(-2px)}.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn.g{background:var(--bg);color:var(--tx);box-shadow:none;border:1px solid var(--bd)}
+.row{display:flex;gap:10px;justify-content:space-between;margin-top:22px;flex-wrap:wrap}
+.disc{background:var(--wa);color:var(--wat);padding:12px 14px;border-radius:14px;font-size:14px;margin:14px 0}
+input[type=text]{width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;margin-bottom:12px}
+input:focus,button:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid var(--bd);background:var(--bg);border-radius:999px;padding:7px 14px;font-size:14px;transition:.2s}
+.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tile{background:var(--bg);border:2px solid transparent;border-radius:18px;padding:14px 10px;text-align:center;transition:.25s}
+.tile:hover{transform:translateY(-3px);border-color:var(--ac2)}.tile.on{border-color:var(--ac);background:var(--ok)}
+.tile em{display:block;font-style:normal;font-size:30px}.tile small{color:var(--mu);font-size:12px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.res{border-radius:18px;padding:16px 18px;font-weight:700;margin-bottom:6px}
+.res.ok{background:var(--ok);color:var(--okt)}.res.wa{background:var(--wa);color:var(--wat)}.res.er{background:var(--er);color:var(--ert)}
+.res p{font-weight:400;margin:4px 0 0}
+ul{padding-left:20px;margin:6px 0}li{margin:4px 0}
+.ck{display:flex;gap:10px;align-items:center;margin:8px 0}.ck input{width:20px;height:20px;accent-color:var(--ac)}
+.sos{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:#d93025;color:#fff;border:0;border-radius:999px;padding:12px 18px;font-weight:800;box-shadow:0 8px 24px rgba(217,48,37,.45);z-index:20}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:30;animation:in .3s}
+.md{background:var(--sf);border-radius:24px;padding:24px;max-width:460px;width:100%;max-height:90vh;overflow:auto}
+.lk{text-decoration:none;display:inline-block;text-align:center}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:999px;z-index:40}
+@media print{.sos,header,.row,.bar{display:none}}
+:root[data-theme="light"]{--bg:#f4f6f9;--sf:#fff;--tx:#0e1a2b;--mu:#556377;--ac:#0b5cab;--ac2:#1473c9;--bd:#dde3ec;--ok:#e6f4ee;--wa:#fff4de;--er:#fde8e6;--okt:#0b6b4f;--wat:#8a5a00;--ert:#a3281d;--sh:0 1px 2px rgba(14,26,43,.06),0 8px 24px rgba(14,26,43,.06)}
+:root[data-theme="dark"]{--bg:#0b121c;--sf:#121c2a;--tx:#e8eef6;--mu:#93a3b8;--ac:#2f7fe6;--ac2:#4c9aff;--bd:#223148;--ok:#10281f;--wa:#2e2510;--er:#33181a;--okt:#6ee7b7;--wat:#fcd34d;--ert:#fca5a5;--sh:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35)}
+body{font-family:"Inter","Segoe UI",system-ui,sans-serif}
+h1,h2{font-family:"Source Serif 4",Georgia,serif;font-weight:700}
+.card{border-radius:16px;padding:30px}
+.btn{border-radius:10px;background:var(--ac);color:#fff;box-shadow:none}.btn:hover{transform:none;background:var(--ac2)}.btn.g{background:var(--bg);color:var(--tx)}
+.tile,.chip,.th,input[type=text],.how div,.res,.disc{border-radius:10px}
+.tile{text-align:left;padding:14px}.tile em{display:none}.tile:hover{transform:none}
+select.th{padding:8px 10px;color:var(--tx)}
+.hero{font-size:0;animation:none;width:52px;height:52px;border-radius:14px;background:var(--ac);position:relative}.hero::after{content:"✚";font-size:26px;color:#fff;position:absolute;inset:0;display:grid;place-items:center}
+.how{counter-reset:s}.how>div>span,.how .mu{display:none}.how div{align-items:center}.how div::before{counter-increment:s;content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo"><i>✚</i> CareCompass</div><div style="display:flex;gap:8px"><select class="th" id="lg" aria-label="Language"></select><button class="th" id="ta" aria-label="Change text size">A+</button><button class="th" id="th" aria-label="Toggle theme">🌙</button></div></header>
+<div class="bar"><b id="pb"></b></div>
+<main id="app"></main>
+<button class="sos" onclick="sos()" aria-label="Emergency help">🚨 SOS</button>
+</div>
+<script>
+const C=[
+{n:"Common cold",e:"🤧",l:1,s:["Runny nose","Sneezing","Sore throat","Mild cough","Mild tiredness","!Trouble breathing","!Fever above 39.5°C"],c:["Rest and drink plenty of warm fluids","Use saline nasal spray or steam inhalation","Gargle warm salt water for throat comfort","Wash hands often and rest at home"],m:["Paracetamol (acetaminophen) for aches or fever","Saline nasal drops","Throat lozenges"],d:["Symptoms last more than 10 days","Fever lasts more than 3 days","Breathing becomes difficult"]},
+{n:"Headache",e:"🤕",l:1,s:["Dull pressure on both sides","Tight neck or shoulders","Worse with stress or screens","Dehydration","!Sudden worst headache of life","!Stiff neck with fever","!Confusion or weakness"],c:["Drink water and rest in a quiet, dim room","Apply a cool or warm compress","Take screen breaks and sleep regularly","Gentle neck stretches"],m:["Paracetamol","Ibuprofen with food (if no stomach, kidney or asthma problems)"],d:["Headaches happen more than 2–3 times a week","Pain keeps getting worse","Pain started after a head injury"]},
+{n:"Sore throat",e:"😖",l:1,s:["Pain when swallowing","Scratchy throat","Hoarse voice","Mild fever","!Cannot swallow saliva","!Difficulty breathing","!Swelling of face or neck"],c:["Warm tea with honey (not for babies under 1)","Gargle warm salt water","Rest your voice and stay hydrated","Humidify the air"],m:["Throat lozenges","Paracetamol or ibuprofen for pain"],d:["White patches or severe pain, especially with fever","Lasts more than a week","Repeated sore throats"]},
+{n:"Cough",e:"😷",l:1,s:["Dry cough","Cough with phlegm","Worse at night","Tickle in throat","!Coughing blood","!Shortness of breath","!Chest pain"],c:["Drink warm fluids and honey","Raise your head while sleeping","Avoid smoke and dust","Steam inhalation"],m:["Honey-based or herbal syrups","Expectorant for chesty cough (check label)"],d:["Cough lasts more than 3 weeks","Green or bloody phlegm","Fever with chest pain"]},
+{n:"Allergies",e:"🌼",l:1,s:["Itchy eyes","Sneezing","Itchy skin or hives","Runny nose","!Swelling of lips or tongue","!Wheezing or trouble breathing","!Dizziness after exposure"],c:["Avoid the trigger (pollen, dust, pets, foods)","Rinse nose with saline","Shower after being outdoors","Keep windows closed in pollen season"],m:["Non-drowsy antihistamines (cetirizine, loratadine)","Antihistamine eye drops"],d:["Symptoms disrupt daily life","Reactions are getting stronger","You may need allergy testing"]},
+{n:"Heartburn / acid reflux",e:"🔥",l:1,s:["Burning in chest after meals","Sour taste","Bloating","Worse when lying down","!Chest pain spreading to arm or jaw","!Black stools","!Trouble swallowing"],c:["Eat smaller meals, avoid late-night eating","Limit coffee, spicy, fatty food and alcohol","Raise your head while sleeping","Avoid smoking"],m:["Antacids (calcium carbonate)","Alginate products","Short-term omeprazole if label allows"],d:["Happens more than twice a week","Weight loss without trying","Heartburn lasts more than 2 weeks"]},
+{n:"Constipation",e:"🚽",l:1,s:["Hard stools","Fewer than 3 bowel movements a week","Bloating","Straining","!Severe belly pain","!Blood in stool","!Vomiting with no gas passing"],c:["Eat fibre: fruit, vegetables, whole grains","Drink 6–8 glasses of water","Walk daily","Do not ignore the urge to go"],m:["Psyllium or bulk fibre","Osmotic laxative (macrogol) short-term"],d:["Lasts more than 2 weeks","Sudden change in habits after age 45","Unexplained weight loss"]},
+{n:"Stomach upset / diarrhea",e:"🤢",l:1,s:["Loose stools","Cramps","Nausea","Mild fever","!Blood in stool","!Signs of dehydration (very dry mouth, no urine)","!Diarrhea over 3 days"],c:["Sip oral rehydration solution often","Eat light food: rice, bananas, toast","Avoid dairy, alcohol, greasy food","Wash hands carefully"],m:["Oral rehydration salts (most important)","Loperamide only for adults without fever or blood"],d:["Children, elderly or pregnant people with diarrhea","Lasts more than 2–3 days","Unable to keep fluids down"]},
+{n:"Back pain",e:"🦴",l:1,s:["Dull ache in lower back","Stiffness in morning","Pain after lifting","Worse when sitting long","!Numbness in legs or groin","!Loss of bladder or bowel control","!Pain after a fall"],c:["Keep moving: gentle walking, avoid bed rest","Heat pack for 15–20 minutes","Light stretching and good posture","Avoid heavy lifting for a few days"],m:["Ibuprofen (with food) or paracetamol","Topical anti-inflammatory gel"],d:["Pain lasts more than 2 weeks","Pain goes down the leg","Pain wakes you at night"]},
+{n:"Sprain / muscle strain",e:"🦶",l:1,s:["Swelling","Bruising","Pain on movement","Tenderness","!Cannot put weight on it","!Visible deformity","!Numb or cold limb"],c:["Rest, Ice (15 min), Compress, Elevate (R.I.C.E.)","Avoid heavy use for 48 hours","Begin gentle movement after swelling falls","Use support bandage"],m:["Topical anti-inflammatory gel","Paracetamol or ibuprofen"],d:["Cannot bear weight or move the joint","Severe swelling or deformity","No improvement in a week"]},
+{n:"Conjunctivitis (pink eye)",e:"👁️",l:1,s:["Red eye","Watery or sticky discharge","Itchy eyes","Gritty feeling","!Sudden vision loss","!Severe eye pain","!Light sensitivity"],c:["Do not touch or rub the eyes","Clean eyelids with clean, damp cloth","Do not share towels","Stop wearing contact lenses"],m:["Lubricating eye drops","Antibiotic drops only if a doctor prescribes"],d:["Pain or blurred vision","Lasts more than a week","Newborns or contact lens wearers"]},
+{n:"Skin rash / eczema",e:"🧴",l:1,s:["Itchy red patches","Dry skin","Small bumps","Flaking","!Rash with fever","!Rash spreading fast","!Blisters or open sores"],c:["Moisturise several times a day","Avoid hot showers and harsh soap","Wear soft cotton","Avoid scratching, keep nails short"],m:["Emollient creams","Mild hydrocortisone 1% short-term (not on face or broken skin without advice)"],d:["Rash is painful or spreading","Signs of infection (pus, warmth)","Rash lasts more than 2 weeks"]},
+{n:"Insomnia",e:"😴",l:1,s:["Hard to fall asleep","Waking at night","Daytime tiredness","Irritability","!Thoughts of self-harm","!Falling asleep while driving"],c:["Keep the same sleep and wake times","Avoid caffeine after noon and screens at night","Keep bedroom cool, dark and quiet","Try relaxation or breathing exercises"],m:["Sleep hygiene is first choice","Short-term melatonin (ask a pharmacist)"],d:["Insomnia lasts more than 3 weeks","It affects work or mood","You rely on sleeping pills"]},
+{n:"Flu (influenza)",e:"🤒",l:2,s:["High fever","Body aches","Chills","Dry cough","Extreme tiredness","!Shortness of breath","!Chest pain","!Confusion","!Blue lips"],c:["Rest at home and avoid others","Drink plenty of fluids","Monitor your temperature","Cover coughs and wash hands"],m:["Paracetamol for fever","Antivirals only by prescription, best within 48 hours"],d:["You are pregnant, over 65, or have chronic illness","Fever lasts more than 3 days","Symptoms improve then worsen"]},
+{n:"COVID-19",e:"🦠",l:2,s:["Fever","Dry cough","Loss of taste or smell","Fatigue","Body aches","!Shortness of breath","!Chest pressure","!Blue lips or face","!Confusion"],c:["Test if possible and isolate","Rest, hydrate, ventilate rooms","Wear a mask around others","Monitor oxygen if you have an oximeter (below 94% is urgent)"],m:["Paracetamol for fever and aches","Antivirals for high-risk people only by prescription"],d:["Breathing becomes harder","High-risk group (elderly, chronic disease)","Symptoms last beyond 10 days"]},
+{n:"Migraine",e:"⚡",l:2,s:["One-sided throbbing pain","Nausea","Light sensitivity","Visual aura","Sound sensitivity","!Sudden worst headache","!Weakness on one side","!Trouble speaking"],c:["Rest in a dark, quiet room","Cold cloth on forehead","Drink water; keep regular meals and sleep","Track triggers in a diary"],m:["Ibuprofen or paracetamol at the start of attack","Triptans by prescription"],d:["First migraine after age 50","Attacks more than 4 times a month","New or changing pattern"]},
+{n:"Sinusitis",e:"👃",l:2,s:["Facial pressure","Blocked nose","Thick nasal discharge","Reduced smell","Tooth pain","!Swelling around eyes","!Severe headache with fever","!Vision changes"],c:["Saline rinse or steam","Warm compress on face","Drink fluids and rest","Sleep with head elevated"],m:["Saline spray","Decongestant spray max 3 days","Paracetamol or ibuprofen"],d:["Lasts more than 10 days","Symptoms improve then worsen","High fever"]},
+{n:"Urinary tract infection",e:"💧",l:2,s:["Burning when urinating","Frequent urination","Cloudy or strong smelling urine","Lower belly pain","!Fever with back or flank pain","!Blood in urine","!Pregnancy"],c:["Drink plenty of water","Urinate often and fully","Use a warm pad on lower belly","Avoid irritants like caffeine"],m:["Paracetamol for pain","Antibiotics are needed, so see a doctor"],d:["Every UTI needs a doctor’s check","Pregnant, male or child","Fever or back pain"]},
+{n:"Food poisoning",e:"🍽️",l:2,s:["Vomiting","Diarrhea","Stomach cramps","Fever","Weakness","!Blood in stool","!Cannot keep fluids down","!Blurred vision or muscle weakness"],c:["Sip rehydration solution in small amounts","Start with bland food after vomiting stops","Rest and avoid preparing food for others","Keep the suspected food if others are ill"],m:["Oral rehydration salts","Anti-nausea medicine as advised by a pharmacist"],d:["Lasts more than 2 days","Signs of dehydration","Children, elderly, pregnant"]},
+{n:"Asthma",e:"🌬️",l:2,s:["Wheezing","Cough at night","Chest tightness","Shortness of breath","!Cannot speak full sentences","!Blue lips","!Reliever inhaler not helping"],c:["Sit upright and stay calm","Use your reliever inhaler as prescribed","Avoid triggers: smoke, dust, cold air","Follow your asthma action plan"],m:["Reliever inhaler (salbutamol) as prescribed","Preventer inhaler by prescription"],d:["You need your reliever more than twice a week","Night symptoms","Diagnosis not yet confirmed"]},
+{n:"Anxiety / stress",e:"🧠",l:2,s:["Constant worry","Racing heart","Restlessness","Trouble sleeping","Muscle tension","!Thoughts of self-harm","!Panic with chest pain"],c:["Slow breathing: in 4 sec, out 6 sec","Move daily and limit caffeine","Talk to someone you trust","Limit news and screens before sleep"],m:["No routine over-the-counter fix; therapy and lifestyle help most","Medication only by a doctor"],d:["Worry affects daily life","Panic attacks","Low mood lasts 2+ weeks"]},
+{n:"Anemia",e:"🩸",l:2,s:["Fatigue","Pale skin","Dizziness","Cold hands and feet","Brittle nails","!Chest pain","!Fainting","!Heavy bleeding"],c:["Eat iron-rich foods: red meat, lentils, spinach","Add vitamin C to help absorption","Avoid tea with meals","Get a blood test (CBC)"],m:["Iron supplements only after a blood test confirms need"],d:["Diagnosis needs lab test","Heavy periods","Shortness of breath on light activity"]},
+{n:"High blood pressure",e:"❤️",l:3,s:["Often no symptoms","Headache","Dizziness","Reading above 140/90","!Reading above 180/120","!Chest pain","!Vision changes or weakness"],c:["Cut salt and processed food","Walk 30 minutes most days","Limit alcohol; stop smoking","Measure blood pressure regularly at home"],m:["Prescription only; never self-start","Never stop prescribed pills suddenly"],d:["Repeated readings above 130/80","Any symptoms with high reading","Family history"]},
+{n:"Type 2 diabetes",e:"🍬",l:3,s:["Excess thirst","Frequent urination","Blurred vision","Slow-healing wounds","Unexplained fatigue","!Fruity breath with vomiting","!Confusion","!Blood sugar above 300 mg/dL"],c:["Choose whole grains, vegetables, lean protein","Cut sugary drinks","Exercise regularly","Check feet daily and keep appointments"],m:["Prescription only (metformin and others)","Do not use supplements as a replacement"],d:["Needs blood test (HbA1c, fasting glucose)","Any listed symptom","Family history"]},
+{n:"Possible heart problem",e:"🫀",l:3,s:["Palpitations","Mild breathlessness on effort","Ankle swelling","Tiredness","!Crushing chest pain","!Pain spreading to arm, jaw or back","!Cold sweat with nausea","!Fainting"],c:["Do not ignore chest symptoms","Sit down, stay calm and call emergency services if severe","Avoid heavy exertion","Get an ECG check"],m:["Do not self-medicate; see a doctor","Emergency: chew 300 mg aspirin only if advised by emergency services"],d:["Any chest pain with effort","Palpitations that repeat","Family history of heart disease"]},
+{n:"Possible stroke warning",e:"🧬",l:3,s:["Brief numbness","Sudden dizziness","Short vision blur","!Face drooping","!Arm weakness","!Speech difficulty","!Sudden severe headache"],c:["Any stroke sign is an emergency (FAST)","Note the time symptoms began","Do not eat, drink or drive","Call emergency services right away"],m:["No home medicine; time is critical"],d:["Face, Arms, Speech problems, call emergency Time"]},
+{n:"Fever",e:"🌡️",l:1,s:["Temperature above 38°C","Chills","Sweating","Headache","!Fever in baby under 3 months","!Stiff neck or rash","!Seizure","!Fever above 40°C"],c:["Drink fluids and rest","Wear light clothing and keep the room cool","Check temperature every few hours","Use lukewarm sponging, never cold or alcohol baths"],m:["Paracetamol","Ibuprofen (not if dehydrated)","Never give aspirin to children"],d:["Fever lasts more than 3 days","Any fever in a baby under 3 months","Fever returns after improving"]},
+{n:"Toothache",e:"🦷",l:1,s:["Throbbing tooth pain","Sensitivity to hot or cold","Swollen gum","Pain when chewing","!Swelling of face or jaw","!Fever with tooth pain","!Trouble swallowing or breathing"],c:["Rinse with warm salt water","Cold compress on the cheek","Avoid very hot, cold or sweet food","Floss gently to remove stuck food"],m:["Ibuprofen or paracetamol","Clove oil dabbed gently (temporary relief)"],d:["A dentist should check any lasting pain","Swelling or pus near the tooth","Pain longer than 2 days"]},
+{n:"Minor burn",e:"🩹",l:1,s:["Red skin","Mild pain","Small blisters","Swelling","!Burn larger than your palm","!Burn on face, hands, genitals or joints","!White or charred skin","!Chemical or electrical burn"],c:["Cool under running water for 20 minutes","Remove rings or tight items near the burn","Cover loosely with a clean non-stick dressing","No ice, butter or toothpaste; do not pop blisters"],m:["Paracetamol for pain","Aloe or simple burn gel on unbroken skin"],d:["Blisters larger than a coin","Signs of infection","Children and elderly people"]},
+{n:"Pneumonia (suspected)",e:"🫁",l:3,s:["Cough with phlegm","Fever and chills","Chest pain on breathing","Fatigue","!Fast breathing","!Blue lips","!Confusion"],c:["See a doctor, since chest exam or X-ray is needed","Rest and drink fluids","Do not suppress cough","Monitor breathing"],m:["Antibiotics only by prescription","Paracetamol for fever"],d:["Any suspicion of pneumonia","Elderly, children, chronic disease","Breathing trouble"]}
+];
+const L=["","Simple","Moderate","Serious"],app=document.getElementById('app'),pb=document.getElementById('pb');
+let st={step:0,filter:0,q:"",c:null,sev:null,dur:null,age:null,risk:[],sy:[]};
+const $=(x)=>document.querySelector(x);
+function prog(p){pb.style.width=p+"%"}
+function go(s){st.step=s;render();scrollTo({top:0,behavior:"smooth"})}
+function render(){[w,a,pick,det,res][st.step]()}
+function w(){prog(5);app.innerHTML=`<div class="card"><div class="hero">🩺</div><h1>Welcome to CareCompass</h1><p class="mu">Your quick guide to understanding symptoms and knowing what to do next.</p>
+<div class="how"><div><span>1️⃣</span><p><b>Choose your condition</b><br><span class="mu" style="font-size:14px">Pick from 30 common health concerns, from simple to serious.</span></p></div>
+<div><span>2️⃣</span><p><b>Answer a few questions</b><br><span class="mu" style="font-size:14px">Tell us how bad it is, how long, and your symptoms.</span></p></div>
+<div><span>3️⃣</span><p><b>Get a clear plan</b><br><span class="mu" style="font-size:14px">Self-care steps, medicines to ask about, and warning signs.</span></p></div></div>
+<div class="disc">⚠️ CareCompass gives general information only. It does not diagnose and is not a replacement for a doctor. In an emergency, call your local emergency number (103 in Uzbekistan, 112 in the EU, 911 in the US).</div>
+<div class="row"><span></span><button class="btn" onclick="go(1)">Next</button></div></div>`}
+function a(){prog(15);app.innerHTML=`<div class="card"><h2>Before we start</h2><p class="mu">Please confirm you understand:</p>
+<ul><li>This is not a medical diagnosis.</li><li>Always read medicine labels and ask a pharmacist if unsure.</li><li>Severe or sudden symptoms need urgent care.</li><li>Your answers stay on your device.</li></ul>
+<div class="row"><button class="btn g" onclick="go(0)">Back</button><button class="btn" onclick="go(2)">Accept and continue</button></div></div>`}
+function pick(){prog(35);const f=C.filter(c=>(!st.filter||c.l==st.filter)&&(c.n+c.s.join(" ")).toLowerCase().includes(st.q.toLowerCase()));
+app.innerHTML=`<div class="card"><h2>What are you dealing with?</h2><p class="mu">Choose a condition, or type your symptom (e.g. “burning chest”, “itchy eyes”).</p>
+<input type="text" id="q" placeholder="Search condition or symptom…" value="${st.q}" aria-label="Search">
+<div class="tabs">${[0,1,2,3].map(i=>`<button class="chip ${st.filter==i?'on':''}" onclick="st.filter=${i};pick()">${i?L[i]:'All'}</button>`).join("")}</div>
+<div class="grid">${f.map(c=>`<button class="tile ${st.c===c?'on':''}" onclick="st.c=C[${C.indexOf(c)}];st.sy=[];go(3)"><em>${c.e}</em><b>${c.n}</b><br><small>${L[c.l]}</small></button>`).join("")||'<p class="mu">No match. Try another word.</p>'}</div>
+${hist()}<div class="row"><button class="btn g" onclick="go(1)">Back</button></div></div>`;
+const q=$('#q');q.oninput=e=>{st.q=e.target.value;const p=e.target.selectionStart;pick();const n=$('#q');n.focus();n.setSelectionRange(p,p)}}
+function opt(k,arr){return `<div class="opts">${arr.map(v=>`<button class="chip ${st[k]===v?'on':''}" onclick="st.${k}='${v}';det()">${v}</button>`).join("")}</div>`}
+function det(){prog(65);const c=st.c,ok=st.sev&&st.dur&&st.age;
+app.innerHTML=`<div class="card"><h2>${c.e} ${c.n}</h2><p class="mu">A few quick questions to personalise your advice.</p>
+<h3>How strong is it?</h3>${opt('sev',['Mild','Moderate','Severe'])}
+<h3>For how long?</h3>${opt('dur',['Under 2 days','3–7 days','Over a week'])}
+<h3>Age group</h3>${opt('age',['Child (under 12)','Teen/adult','Over 65'])}
+<h3>Which of these do you have?</h3>${c.s.map((s,i)=>{const r=s[0]=="!";return `<label class="ck"><input type="checkbox" ${st.sy.includes(i)?'checked':''} onchange="tg(${i})"> ${r?s.slice(1):s}</label>`}).join("")}
+<h3>Anything that applies to you?</h3>${["Pregnant or breastfeeding","Allergic to medicines","Stomach ulcer, kidney or liver disease","Taking other regular medicines"].map(r=>`<label class="ck"><input type="checkbox" ${st.risk.includes(r)?'checked':''} onchange="tr('${r}')"> ${r}</label>`).join("")}
+<div class="row"><button class="btn g" onclick="go(2)">Back</button><button class="btn" ${ok?'':'disabled'} onclick="go(4)">Get my plan</button></div></div>`}
+function tg(i){st.sy=st.sy.includes(i)?st.sy.filter(x=>x!=i):[...st.sy,i]}
+function tr(r){st.risk=st.risk.includes(r)?st.risk.filter(x=>x!=r):[...st.risk,r]}
+function res(){prog(100);const c=st.c;
+const red=st.sy.some(i=>c.s[i][0]=="!");
+let lv=red?3:(c.l==3||st.sev=="Severe"||st.dur=="Over a week"||(st.age!="Teen/adult"&&st.sev!="Mild")||st.risk.length>1&&c.l>1)?2:1;
+const H={3:["er","🚨 Seek urgent medical care now","You selected a warning sign. Call your local emergency number or go to the nearest emergency department. Do not wait or drive yourself."],2:["wa","🩺 See a doctor soon","Based on your answers, a professional check within 1–2 days is wise."],1:["ok","🌿 Self-care is likely fine","Follow the steps below and watch for warning signs."]}[lv];
+const careful=st.risk.length||st.age!="Teen/adult";sv(c,lv);
+app.innerHTML=`<div class="card"><h2>${c.e} Your plan: ${c.n}</h2>
+<div class="res ${H[0]}">${H[1]}<p>${H[2]}</p></div>
+${red?'':`<h3>✅ What you can do</h3><ul>${c.c.map(x=>`<li>${x}</li>`).join("")}</ul>
+<h3>💊 Medicines to ask about</h3><ul>${c.m.map(x=>`<li>${x}</li>`).join("")}</ul>
+<p class="mu" style="font-size:14px">Follow the label for dose. Do not combine products with the same ingredient.${careful?' <b>Because of your age or health notes, ask a doctor or pharmacist before taking any medicine.</b>':''}${st.risk.includes("Allergic to medicines")?' <b>Check ingredients against your allergies.</b>':''}</p>`}
+<h3>👨‍⚕️ See a doctor if</h3><ul>${c.d.map(x=>`<li>${x}</li>`).join("")}</ul>
+<h3>🚩 Emergency signs</h3><ul>${c.s.filter(s=>s[0]=="!").map(s=>`<li>${s.slice(1)}</li>`).join("")}</ul>
+<div class="disc">General information only, not a diagnosis. When in doubt, contact a healthcare professional.</div>
+<div class="row"><button class="btn g" onclick="st={step:0,filter:0,q:'',c:null,sev:null,dur:null,age:null,risk:[],sy:[]};go(2)">Start over</button><button class="btn g" onclick="cp()">Copy summary</button><button class="btn" onclick="print()">Save or print</button></div><div class="row"><a class="btn g lk" href="https://www.google.com/maps/search/pharmacy+near+me" target="_blank" rel="noopener">💊 Nearby pharmacy</a><a class="btn g lk" href="https://www.google.com/maps/search/hospital+near+me" target="_blank" rel="noopener">🏥 Nearby hospital</a></div></div>`}
+const th=document.getElementById('th'),R=document.documentElement;
+let zs=0;const Z=[16,18,20];try{zs=+localStorage.getItem('cc-z')||0}catch(e){}
+function az(){document.body.style.fontSize=Z[zs]+'px'}az();
+document.getElementById('ta').onclick=()=>{zs=(zs+1)%3;az();try{localStorage.setItem('cc-z',zs)}catch(e){}};
+function gh(){try{return JSON.parse(localStorage.getItem('cc-h')||'[]').filter(x=>C.some(y=>y.n==x.n))}catch(e){return[]}}
+function sv(c,lv){try{const h=gh().filter(x=>x.n!=c.n);h.unshift({n:c.n,e:c.e,v:lv});localStorage.setItem('cc-h',JSON.stringify(h.slice(0,5)))}catch(e){}}
+function hist(){const h=gh();return h.length?`<h3>🕘 Recent checks</h3><div class="opts">${h.map(x=>`<button class="chip" onclick="st.c=C.find(y=>y.n=='${x.n}');st.sy=[];go(3)">${x.e} ${x.n}: ${['','self-care','see doctor','urgent'][x.v]}</button>`).join("")}<button class="chip" onclick="try{localStorage.removeItem('cc-h')}catch(e){};pick()">Clear</button></div>`:""}
+function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
+function fb(t){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('Summary copied')}catch(e){toast('Copy not available')}a.remove()}
+function cp(){const t=document.querySelector('.card').innerText;try{navigator.clipboard.writeText(t).then(()=>toast('Summary copied'),()=>fb(t))}catch(e){fb(t)}}
+function sos(){const o=document.createElement('div');o.className='ov';o.onclick=e=>{if(e.target==o)o.remove()};o.innerHTML=`<div class="md" role="dialog" aria-label="Emergency help"><h2>🚨 Emergency help</h2><p class="mu">Call first and stay with the person. Numbers vary by country.</p><div class="opts"><a class="btn lk" href="tel:103">103 Ambulance (UZ)</a><a class="btn lk" href="tel:112">112 Emergency</a><a class="btn g lk" href="tel:911">911 (US)</a><a class="btn g lk" href="tel:999">999 (UK)</a></div><h3>While you wait</h3><ul><li>Check if they are awake and breathing</li><li>Heavy bleeding: press firmly with a clean cloth</li><li>No pulse or breathing: start chest compressions, 100–120 per minute</li><li>Unconscious but breathing: place them on their side</li><li>Do not give food or drink</li></ul><div class="row"><span></span><button class="btn g" onclick="this.closest('.ov').remove()">Close</button></div></div>`;document.body.appendChild(o)}
+function ap(t){R.setAttribute('data-theme',t);th.textContent=t=="dark"?"☀️ Light":"🌙 Dark"}
+let t0=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+try{t0=localStorage.getItem('cc-theme')||t0}catch(e){}
+ap(t0);
+th.onclick=()=>{const n=R.getAttribute('data-theme')=='dark'?'light':'dark';ap(n);try{localStorage.setItem('cc-theme',n)}catch(e){}};
+C.forEach(c=>c.e="");
+const EN=["Welcome to CareCompass","Your quick guide to understanding symptoms and knowing what to do next.","Choose your condition","Answer a few questions","Get a clear plan","Next","Accept and continue","Back","What are you dealing with?","Get my plan","Start over","Save or print","See a doctor if","What you can do","Medicines to ask about","Emergency signs","Seek urgent medical care now","See a doctor soon","Self-care is likely fine","All","Search condition or symptom…","Emergency help","Close","Before we start","General information only. Not a diagnosis. In an emergency, call your local emergency number (103, 112, 911)."];
+const TR={
+uz:["CareCompass’ga xush kelibsiz","Alomatlarni tushunish va keyingi qadamni bilish uchun qisqa qo‘llanma.","Kasallikni tanlang","Bir nechta savolga javob bering","Aniq reja oling","Keyingi","Qabul qilish va davom etish","Orqaga","Sizni nima bezovta qilmoqda?","Rejamni olish","Qaytadan boshlash","Saqlash yoki chop etish","Quyidagi holatda shifokorga murojaat qiling","Nima qilish mumkin","So‘ralishi kerak bo‘lgan dorilar","Xavfli belgilar","Zudlik bilan tibbiy yordamga murojaat qiling","Tez orada shifokorga ko‘rining","Uyda parvarish yetarli bo‘lishi mumkin","Hammasi","Kasallik yoki alomatni qidiring…","Shoshilinch yordam","Yopish","Boshlashdan oldin","Faqat umumiy ma’lumot. Tashxis emas. Favqulodda holatda 103 yoki 112 ga qo‘ng‘iroq qiling."],
+ru:["Добро пожаловать в CareCompass","Быстрый помощник: поймите симптомы и узнайте, что делать дальше.","Выберите состояние","Ответьте на несколько вопросов","Получите чёткий план","Далее","Принять и продолжить","Назад","Что вас беспокоит?","Получить план","Начать заново","Сохранить или распечатать","Обратитесь к врачу, если","Что можно сделать","Лекарства, о которых стоит спросить","Опасные признаки","Срочно обратитесь за медицинской помощью","Скоро обратитесь к врачу","Достаточно домашнего ухода","Все","Поиск состояния или симптома…","Экстренная помощь","Закрыть","Прежде чем начать","Только общая информация. Не диагноз. В экстренной ситуации звоните 103, 112 или 911."],
+es:["Bienvenido a CareCompass","Tu guía rápida para entender los síntomas y saber qué hacer después.","Elige tu afección","Responde unas preguntas","Obtén un plan claro","Siguiente","Aceptar y continuar","Atrás","¿Qué te preocupa?","Obtener mi plan","Empezar de nuevo","Guardar o imprimir","Consulta a un médico si","Qué puedes hacer","Medicamentos por consultar","Señales de emergencia","Busca atención médica urgente ahora","Consulta a un médico pronto","Probablemente basten los cuidados en casa","Todas","Buscar afección o síntoma…","Ayuda de emergencia","Cerrar","Antes de empezar","Solo información general. No es un diagnóstico. En una emergencia llama al 112, 911 o a tu número local."],
+fr:["Bienvenue sur CareCompass","Votre guide rapide pour comprendre les symptômes et savoir quoi faire ensuite.","Choisissez votre problème","Répondez à quelques questions","Obtenez un plan clair","Suivant","Accepter et continuer","Retour","De quoi souffrez-vous ?","Obtenir mon plan","Recommencer","Enregistrer ou imprimer","Consultez un médecin si","Ce que vous pouvez faire","Médicaments à demander","Signes d’urgence","Consultez d’urgence un médecin","Consultez bientôt un médecin","Les soins à domicile suffisent probablement","Tout","Rechercher un problème ou symptôme…","Aide d’urgence","Fermer","Avant de commencer","Informations générales uniquement. Pas un diagnostic. En cas d’urgence, appelez le 112 ou le 15."],
+de:["Willkommen bei CareCompass","Ihr schneller Leitfaden, um Symptome zu verstehen und zu wissen, was als Nächstes zu tun ist.","Beschwerde wählen","Einige Fragen beantworten","Klaren Plan erhalten","Weiter","Akzeptieren und fortfahren","Zurück","Was belastet Sie?","Meinen Plan erhalten","Neu starten","Speichern oder drucken","Arzt aufsuchen, wenn","Was Sie tun können","Medikamente zur Rücksprache","Notfallzeichen","Sofort ärztliche Hilfe holen","Bald einen Arzt aufsuchen","Selbstbehandlung genügt wahrscheinlich","Alle","Beschwerde oder Symptom suchen…","Notfallhilfe","Schließen","Bevor wir beginnen","Nur allgemeine Informationen. Keine Diagnose. Im Notfall 112 wählen."],
+ar:["مرحبًا بك في CareCompass","دليلك السريع لفهم الأعراض ومعرفة الخطوة التالية.","اختر الحالة","أجب عن بعض الأسئلة","احصل على خطة واضحة","التالي","قبول ومتابعة","رجوع","ما الذي تعاني منه؟","احصل على خطتي","ابدأ من جديد","حفظ أو طباعة","راجع الطبيب إذا","ما يمكنك فعله","أدوية يُنصح بالاستفسار عنها","علامات الطوارئ","اطلب رعاية طبية عاجلة الآن","راجع الطبيب قريبًا","الرعاية الذاتية غالبًا كافية","الكل","ابحث عن حالة أو عرض…","مساعدة الطوارئ","إغلاق","قبل أن نبدأ","معلومات عامة فقط وليست تشخيصًا. في الطوارئ اتصل بـ 112 أو 911."],
+zh:["欢迎使用 CareCompass","帮助您了解症状并知道下一步该怎么做的快速指南。","选择您的病症","回答几个问题","获取清晰方案","下一步","接受并继续","返回","您哪里不舒服？","获取我的方案","重新开始","保存或打印","出现以下情况请就医","您可以怎么做","可咨询的药物","紧急信号","请立即就医","请尽快就医","居家护理可能就够了","全部","搜索病症或症状…","紧急求助","关闭","开始之前","仅供一般参考，不构成诊断。紧急情况请拨打 120 或 112。"],
+hi:["CareCompass में आपका स्वागत है","लक्षणों को समझने और आगे क्या करना है जानने की त्वरित गाइड।","अपनी समस्या चुनें","कुछ सवालों के जवाब दें","स्पष्ट योजना पाएं","आगे","स्वीकार करें और जारी रखें","वापस","आपको क्या समस्या है?","मेरी योजना पाएं","फिर से शुरू करें","सहेजें या प्रिंट करें","इन स्थितियों में डॉक्टर को दिखाएं","आप क्या कर सकते हैं","पूछने योग्य दवाएं","आपातकालीन संकेत","तुरंत चिकित्सा सहायता लें","जल्द डॉक्टर को दिखाएं","घरेलू देखभाल संभवतः पर्याप्त है","सभी","समस्या या लक्षण खोजें…","आपातकालीन सहायता","बंद करें","शुरू करने से पहले","केवल सामान्य जानकारी, निदान नहीं। आपात स्थिति में 112 या 108 पर कॉल करें।"],
+tr:["CareCompass’e hoş geldiniz","Belirtileri anlamak ve sonraki adımı bilmek için hızlı rehberiniz.","Rahatsızlığınızı seçin","Birkaç soruyu yanıtlayın","Net bir plan alın","İleri","Kabul et ve devam et","Geri","Neyiniz var?","Planımı al","Baştan başla","Kaydet veya yazdır","Şu durumda doktora gidin","Neler yapabilirsiniz","Sorulması gereken ilaçlar","Acil durum belirtileri","Hemen tıbbi yardım alın","Yakında doktora gidin","Evde bakım muhtemelen yeterli","Tümü","Rahatsızlık veya belirti ara…","Acil yardım","Kapat","Başlamadan önce","Yalnızca genel bilgidir, tanı değildir. Acil durumda 112’yi arayın."]};
+const NM={en:"English",uz:"O‘zbekcha",ru:"Русский",es:"Español",fr:"Français",de:"Deutsch",ar:"العربية",zh:"中文",hi:"हिन्दी",tr:"Türkçe"};
+let lang="en";try{const s=localStorage.getItem('cc-l')||navigator.language.slice(0,2);if(NM[s])lang=s}catch(e){}
+const D=EN.length-1,LT=k=>lang=='en'?EN[k]:TR[lang][k];
+function tr(){const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),ns=[];while(w.nextNode())ns.push(w.currentNode);
+ns.forEach(n=>{const s=n.nodeValue.replace(/^[^\p{L}\p{N}]+/u,'').trim();let k=EN.indexOf(s);if(/^(CareCompass gives|General information only,)/.test(s))k=D;if(k>=0)n.nodeValue=LT(k)});
+const q=document.getElementById('q');if(q)q.placeholder=LT(20)}
+function a(){prog(15);app.innerHTML=`<div class="card"><h2>Before we start</h2><div class="disc">CareCompass gives general information only. It does not diagnose.</div><div class="row"><button class="btn g" onclick="go(0)">Back</button><button class="btn" onclick="go(2)">Accept and continue</button></div></div>`}
+const _r=render;render=function(){_r();tr()};
+const _s=sos;sos=function(){_s();tr()};
+const lg=document.getElementById('lg');lg.innerHTML=Object.keys(NM).map(k=>`<option value="${k}">${NM[k]}</option>`).join("");
+function sl(){lg.value=lang;R.dir=lang=="ar"?"rtl":"ltr";R.lang=lang}
+lg.onchange=()=>{lang=lg.value;try{localStorage.setItem('cc-l',lang)}catch(e){}sl();render()};
+let SM,tc={};try{tc=JSON.parse(localStorage.getItem('cc-tc')||'{}')}catch(e){}
+async function tx(ns){const L=lang;if(L=='en')return;const m=tc[L]=tc[L]||{},dv=new Set(TR[L]);
+const vis=ns.filter(n=>n.isConnected&&!/^(OPTION|SCRIPT|STYLE)$/.test(n.parentNode.tagName)&&/\p{L}/u.test(n.nodeValue)&&n.nodeValue.trim().length>1&&!dv.has(n.nodeValue.trim())&&n.nodeValue.trim()!='CareCompass');
+const need=[...new Set(vis.map(n=>n.nodeValue.trim()).filter(s=>!(s in m)))];
+if(need.length){if(SM===undefined){try{SM=await claude.use("sample")}catch(e){SM=null}}
+if(SM){toast('⏳');for(let i=0;i<need.length;i+=50){const p=need.slice(i,i+50);
+try{const r=await SM.json(`Translate every string of this JSON array (medical self-care text for the public) into ${NM[L]}. Keep the exact meaning, drug names, numbers and units. Return ONLY a JSON array of the same length and order.\n`+JSON.stringify(p));
+if(Array.isArray(r)&&r.length==p.length)p.forEach((s,j)=>m[s]=String(r[j]))}catch(e){}}
+try{localStorage.setItem('cc-tc',JSON.stringify(tc))}catch(e){}}}
+if(L!=lang)return;vis.forEach(n=>{const s=n.nodeValue.trim();if(n.isConnected&&m[s])n.nodeValue=m[s]})}
+const _t=tr;tr=function(){_t();const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),ns=[];while(w.nextNode())ns.push(w.currentNode);tx(ns)};
+sl();render();
+</script>
+</body>
+</html>
